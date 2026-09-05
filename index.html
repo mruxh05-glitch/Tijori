@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -9,8 +9,17 @@
 <title>Tijori — Document Vault</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap');
-body { margin: 0; background: #141b2e; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px 12px; box-sizing: border-box; }
-body > div#tijori-page { width: 100%; max-width: 1024px; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: #141b2e; min-height: 100vh;
+  display: flex; padding: 24px 12px; box-sizing: border-box;
+}
+/* Centering is done with margin:auto on the child (not align-items/justify-content
+   on body). align-items:center clips the top of tall content on many mobile
+   browsers and makes it impossible to scroll up to see it — margin:auto centers
+   the same way when content fits, but degrades gracefully to normal top-aligned
+   scrolling once content is taller than the screen. */
+body > div#tijori-page { width: 100%; max-width: 1024px; margin: auto; }
 
 #tijori-root {
   --ink: #141b2e;
@@ -241,7 +250,7 @@ body > div#tijori-page { width: 100%; max-width: 1024px; }
 .tj-source-btn.active { border-color: var(--seal); background: #fdf5f6; }
 
 .tj-camera-wrap { position: relative; border-radius: 8px; overflow: hidden; background: #000; margin-bottom: 14px; }
-.tj-camera-wrap video, .tj-camera-wrap canvas { width: 100%; display: block; }
+.tj-camera-wrap video, .tj-camera-wrap canvas, .tj-camera-wrap img { width: 100%; display: block; }
 .tj-cam-shutter {
   position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
   width: 56px; height: 56px; border-radius: 50%; background: #fff; border: 3px solid rgba(0,0,0,0.25);
