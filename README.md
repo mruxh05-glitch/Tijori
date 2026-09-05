@@ -1,2 +1,2 @@
 # Tijori
-Project
+Project for document storage
