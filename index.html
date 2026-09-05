@@ -1,13 +1,11 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<!-- Forcing a fixed layout width (instead of "width=device-width") stops
-     phones from switching into their normal mobile rendering, so Tijori
-     renders as a shrunk-down copy of the desktop layout on Android/iOS
-     too — matching the desktop look, as requested. Users can pinch-zoom
-     in to tap smaller controls. -->
-<meta name="viewport" content="width=1024">
+<!-- Standard responsive viewport: the CSS below has real mobile
+     breakpoints (like the reference app), so phones get an actual
+     mobile-optimized layout instead of a shrunk desktop copy. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tijori — Document Vault</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap');
@@ -35,6 +33,9 @@ body > div#tijori-page { width: 100%; max-width: 1024px; }
   position: relative;
   box-sizing: border-box;
 }
+@media (max-width: 720px) {
+  #tijori-root { min-height: 0; border-radius: 10px; }
+}
 #tijori-root *, #tijori-root *::before, #tijori-root *::after { box-sizing: border-box; }
 #tijori-root h1, #tijori-root h2, #tijori-root h3 { font-family: 'Fraunces', serif; margin: 0; }
 #tijori-root button { font-family: 'Inter', sans-serif; cursor: pointer; }
@@ -47,9 +48,11 @@ body > div#tijori-page { width: 100%; max-width: 1024px; }
   grid-template-columns: 1.1fr 1fr;
   min-height: 640px;
 }
-/* Mobile breakpoint intentionally removed: the layout below stays
-   identical on phones and desktop, matching the desktop design at
-   all widths (see the forced-width viewport meta tag in <head>). */
+@media (max-width: 720px) {
+  .tj-login { grid-template-columns: 1fr; min-height: 0; }
+  .tj-login-brand { min-height: 200px; padding: 36px 28px; }
+  .tj-login-form-side { padding: 36px 24px; }
+}
 .tj-login-brand {
   background:
     radial-gradient(circle at 80% 20%, rgba(184,137,47,0.18), transparent 55%),
@@ -121,6 +124,7 @@ body > div#tijori-page { width: 100%; max-width: 1024px; }
 
 /* ---------- DASHBOARD ---------- */
 .tj-dash { min-height: 640px; background: var(--paper); display: none; flex-direction: column; }
+@media (max-width: 720px) { .tj-dash { min-height: 0; } }
 .tj-topbar {
   display: flex; align-items: center; justify-content: space-between;
   padding: 18px 32px; background: var(--ink); color: var(--paper);
@@ -142,13 +146,18 @@ body > div#tijori-page { width: 100%; max-width: 1024px; }
 .tj-logout-btn:hover { border-color: rgba(246,241,230,0.6); }
 
 .tj-dash-body { padding: 34px 36px 44px; flex: 1; }
+@media (max-width: 720px) {
+  .tj-topbar { padding: 14px 18px; }
+  .tj-dash-body { padding: 22px 18px 32px; }
+  .tj-user-name { display: none; }
+}
 .tj-dash-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 26px; }
 .tj-dash-head h2 { font-size: 26px; font-weight: 600; }
 .tj-dash-stat { font-size: 13.5px; color: var(--slate); }
 
 .tj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-/* Mobile breakpoints intentionally removed — .tj-grid keeps its
-   desktop 3-column layout at every screen width. */
+@media (max-width: 860px) { .tj-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .tj-grid { grid-template-columns: 1fr; } }
 
 .tj-cat-card {
   background: #fff; border: 1px solid var(--line-paper); border-radius: 8px;
@@ -185,8 +194,8 @@ body > div#tijori-page { width: 100%; max-width: 1024px; }
 .tj-add-btn:hover { background: var(--seal-dark); }
 
 .tj-doc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-/* Mobile breakpoints intentionally removed — .tj-doc-grid keeps its
-   desktop column count at every screen width. */
+@media (max-width: 860px) { .tj-doc-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 560px) { .tj-doc-grid { grid-template-columns: repeat(2, 1fr); } }
 .tj-doc-card {
   background: #fff; border: 1px solid var(--line-paper); border-radius: 7px; overflow: hidden;
   text-align: left; padding: 0; display: flex; flex-direction: column;
@@ -204,12 +213,19 @@ body > div#tijori-page { width: 100%; max-width: 1024px; }
 
 /* ---------- MODAL ---------- */
 .tj-modal-overlay {
-  position: absolute; inset: 0; background: rgba(20,27,46,0.55);
+  position: fixed; inset: 0; background: rgba(20,27,46,0.55);
   display: none; align-items: center; justify-content: center; padding: 20px; z-index: 50;
 }
 .tj-modal {
   background: var(--paper); border-radius: 10px; max-width: 440px; width: 100%;
   max-height: 90%; overflow-y: auto; padding: 26px 26px 24px;
+}
+@media (max-width: 720px) {
+  /* Modals fill the whole screen on phones instead of being boxed into
+     whatever height the vault card happens to be — this is what was
+     making "Add document" (and the document viewer) look tiny/cramped. */
+  .tj-modal-overlay { padding: 0; }
+  .tj-modal { max-width: 100%; width: 100%; height: 100%; max-height: 100%; border-radius: 0; }
 }
 .tj-modal h3 { font-size: 19px; font-weight: 600; margin-bottom: 6px; }
 .tj-modal .tj-sub { color: var(--slate); font-size: 13px; margin-bottom: 18px; }
@@ -1080,7 +1096,7 @@ body > div#tijori-page { width: 100%; max-width: 1024px; }
   $('#tj-add-doc-btn').addEventListener('click', openAddModal);
   $('#tj-add-close').addEventListener('click', closeAddModal);
   $('#tj-add-cancel').addEventListener('click', closeAddModal);
-  $('#tj-src-upload').addEventListener('click', () => setAddSource('upload'));
+  $('#tj-src-upload').addEventListener('click', () => { setAddSource('upload'); $('#tj-file-input').click(); });
   $('#tj-src-camera').addEventListener('click', () => setAddSource('camera'));
   $('#tj-file-input').addEventListener('change', (e) => handleFileChosen(e.target.files[0]));
   $('#tj-add-save').addEventListener('click', saveDocument);
