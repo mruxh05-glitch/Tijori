@@ -1,0 +1,1059 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap');
+
+#tijori-root {
+  --ink: #141b2e;
+  --ink-soft: #232c44;
+  --paper: #f6f1e6;
+  --paper-dim: #ece5d4;
+  --seal: #a6314a;
+  --seal-dark: #832540;
+  --brass: #b8892f;
+  --graphite: #2b2e36;
+  --slate: #7c8494;
+  --line: rgba(20,27,46,0.14);
+  --line-paper: rgba(20,27,46,0.10);
+  font-family: 'Inter', sans-serif;
+  color: var(--graphite);
+  background: var(--ink);
+  min-height: 640px;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+}
+#tijori-root *, #tijori-root *::before, #tijori-root *::after { box-sizing: border-box; }
+#tijori-root h1, #tijori-root h2, #tijori-root h3 { font-family: 'Fraunces', serif; margin: 0; }
+#tijori-root button { font-family: 'Inter', sans-serif; cursor: pointer; }
+#tijori-root input { font-family: 'Inter', sans-serif; }
+#tijori-root ::selection { background: var(--brass); color: #fff; }
+
+/* ---------- LOGIN SCREEN ---------- */
+.tj-login {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  min-height: 640px;
+}
+@media (max-width: 720px) {
+  .tj-login { grid-template-columns: 1fr; }
+  .tj-login-brand { min-height: 220px; }
+}
+.tj-login-brand {
+  background:
+    radial-gradient(circle at 80% 20%, rgba(184,137,47,0.18), transparent 55%),
+    linear-gradient(160deg, #141b2e 0%, #1c2540 100%);
+  color: var(--paper);
+  padding: 48px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+.tj-seal {
+  width: 54px; height: 54px; border-radius: 50%;
+  border: 1.5px solid rgba(246,241,230,0.55);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.tj-seal::before {
+  content: ''; position: absolute; inset: 6px;
+  border: 1px solid rgba(246,241,230,0.35); border-radius: 50%;
+}
+.tj-seal span { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; }
+.tj-login-brand h1 { font-size: 40px; font-weight: 600; line-height: 1.05; margin-top: 28px; letter-spacing: -0.01em; }
+.tj-login-brand p { font-size: 15px; line-height: 1.55; color: rgba(246,241,230,0.72); max-width: 360px; margin-top: 14px; }
+.tj-marks { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px; }
+.tj-mark-chip {
+  font-size: 12px; padding: 6px 12px; border-radius: 3px;
+  border: 1px solid rgba(246,241,230,0.25); color: rgba(246,241,230,0.78);
+}
+.tj-login-foot { font-size: 12.5px; color: rgba(246,241,230,0.45); line-height: 1.6; }
+
+.tj-login-form-side {
+  background: var(--paper);
+  padding: 48px 44px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.tj-form-card { max-width: 340px; margin: 0 auto; width: 100%; }
+.tj-form-card h2 { font-size: 24px; font-weight: 600; }
+.tj-form-card > p.tj-sub { color: var(--slate); font-size: 14px; margin: 8px 0 26px; line-height: 1.5; }
+
+.tj-google-btn {
+  width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
+  background: #fff; border: 1px solid var(--line-paper); border-radius: 6px;
+  padding: 12px 16px; font-size: 14.5px; font-weight: 600; color: var(--graphite);
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+.tj-google-btn:hover { box-shadow: 0 2px 10px rgba(20,27,46,0.12); border-color: rgba(20,27,46,0.22); }
+.tj-divider { display: flex; align-items: center; gap: 12px; margin: 22px 0; color: var(--slate); font-size: 12.5px; }
+.tj-divider::before, .tj-divider::after { content: ''; flex: 1; height: 1px; background: var(--line-paper); }
+
+.tj-field { margin-bottom: 14px; }
+.tj-field label { display: block; font-size: 12.5px; color: var(--slate); margin-bottom: 6px; }
+.tj-field input {
+  width: 100%; padding: 11px 13px; border-radius: 6px; border: 1px solid var(--line-paper);
+  background: #fff; font-size: 14.5px; color: var(--graphite); outline: none;
+  transition: border-color .15s ease;
+}
+.tj-field input:focus { border-color: var(--seal); }
+.tj-primary-btn {
+  width: 100%; background: var(--ink); color: var(--paper); border: none; border-radius: 6px;
+  padding: 12px 16px; font-size: 14.5px; font-weight: 600; margin-top: 6px;
+  transition: background .15s ease;
+}
+.tj-primary-btn:hover { background: var(--ink-soft); }
+.tj-toggle-line { text-align: center; margin-top: 18px; font-size: 13.5px; color: var(--slate); }
+.tj-toggle-line button { background: none; border: none; color: var(--seal); font-weight: 600; font-size: 13.5px; padding: 0; }
+.tj-form-note { font-size: 12px; color: var(--slate); margin-top: 18px; line-height: 1.5; padding-top: 14px; border-top: 1px solid var(--line-paper); }
+.tj-error { color: var(--seal-dark); font-size: 13px; margin: -6px 0 12px; }
+
+/* ---------- DASHBOARD ---------- */
+.tj-dash { min-height: 640px; background: var(--paper); display: none; flex-direction: column; }
+.tj-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 32px; background: var(--ink); color: var(--paper);
+}
+.tj-topbar-brand { display: flex; align-items: center; gap: 10px; }
+.tj-topbar-brand .tj-seal { width: 34px; height: 34px; }
+.tj-topbar-brand .tj-seal span { font-size: 14px; }
+.tj-topbar-brand strong { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 600; }
+.tj-user-chip { display: flex; align-items: center; gap: 10px; }
+.tj-user-avatar {
+  width: 32px; height: 32px; border-radius: 50%; background: var(--brass); color: #14161c;
+  display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;
+}
+.tj-user-name { font-size: 13.5px; color: rgba(246,241,230,0.85); }
+.tj-logout-btn {
+  background: none; border: 1px solid rgba(246,241,230,0.3); color: rgba(246,241,230,0.85);
+  padding: 6px 13px; border-radius: 5px; font-size: 12.5px;
+}
+.tj-logout-btn:hover { border-color: rgba(246,241,230,0.6); }
+
+.tj-dash-body { padding: 34px 36px 44px; flex: 1; }
+.tj-dash-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 26px; }
+.tj-dash-head h2 { font-size: 26px; font-weight: 600; }
+.tj-dash-stat { font-size: 13.5px; color: var(--slate); }
+
+.tj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+@media (max-width: 860px) { .tj-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .tj-grid { grid-template-columns: 1fr; } }
+
+.tj-cat-card {
+  background: #fff; border: 1px solid var(--line-paper); border-radius: 8px;
+  overflow: hidden; text-align: left; padding: 0; display: flex; flex-direction: column;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.tj-cat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(20,27,46,0.10); }
+.tj-cat-tab { height: 6px; }
+.tj-cat-inner { padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 12px; }
+.tj-cat-top { display: flex; align-items: center; gap: 12px; }
+.tj-cat-mono {
+  width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-family: 'Fraunces', serif; font-weight: 600; font-size: 15px;
+}
+.tj-cat-title { font-size: 15px; font-weight: 600; line-height: 1.3; }
+.tj-cat-count { font-size: 12.5px; color: var(--slate); }
+.tj-cat-thumbs { display: flex; gap: 6px; min-height: 34px; align-items: center; }
+.tj-cat-thumb { width: 34px; height: 34px; border-radius: 4px; object-fit: cover; border: 1px solid var(--line-paper); }
+.tj-cat-empty { font-size: 12px; color: var(--slate); font-style: italic; }
+.tj-cat-card-new { border-style: dashed; background: rgba(255,255,255,0.5); box-shadow: none; }
+.tj-cat-card-new:hover { border-color: var(--brass); box-shadow: none; transform: none; background: #fff; }
+.tj-cat-card-new .tj-cat-inner { padding: 22px 18px; gap: 8px; }
+
+/* ---------- CATEGORY DETAIL ---------- */
+.tj-detail-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; flex-wrap: wrap; gap: 12px; }
+.tj-back-btn { background: none; border: none; color: var(--slate); font-size: 13.5px; display: flex; align-items: center; gap: 6px; padding: 0; margin-bottom: 14px; }
+.tj-back-btn:hover { color: var(--graphite); }
+.tj-detail-title { display: flex; align-items: center; gap: 12px; }
+.tj-add-btn {
+  background: var(--seal); color: #fff; border: none; border-radius: 6px;
+  padding: 10px 18px; font-size: 13.5px; font-weight: 600;
+}
+.tj-add-btn:hover { background: var(--seal-dark); }
+
+.tj-doc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+@media (max-width: 860px) { .tj-doc-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 560px) { .tj-doc-grid { grid-template-columns: repeat(2, 1fr); } }
+.tj-doc-card {
+  background: #fff; border: 1px solid var(--line-paper); border-radius: 7px; overflow: hidden;
+  text-align: left; padding: 0; display: flex; flex-direction: column;
+}
+.tj-doc-thumb-wrap { aspect-ratio: 4/3; background: var(--paper-dim); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.tj-doc-thumb-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.tj-doc-pdf-icon { color: var(--slate); }
+.tj-doc-meta { padding: 10px 12px 12px; }
+.tj-doc-name { font-size: 13px; font-weight: 600; margin-bottom: 2px; word-break: break-word; }
+.tj-doc-date { font-size: 11.5px; color: var(--slate); }
+
+.tj-empty-state { text-align: center; padding: 60px 20px; color: var(--slate); }
+.tj-empty-state h3 { font-size: 17px; color: var(--graphite); font-weight: 600; margin-bottom: 8px; }
+.tj-empty-state p { font-size: 13.5px; max-width: 320px; margin: 0 auto; }
+
+/* ---------- MODAL ---------- */
+.tj-modal-overlay {
+  position: absolute; inset: 0; background: rgba(20,27,46,0.55);
+  display: none; align-items: center; justify-content: center; padding: 20px; z-index: 50;
+}
+.tj-modal {
+  background: var(--paper); border-radius: 10px; max-width: 440px; width: 100%;
+  max-height: 90%; overflow-y: auto; padding: 26px 26px 24px;
+}
+.tj-modal h3 { font-size: 19px; font-weight: 600; margin-bottom: 6px; }
+.tj-modal .tj-sub { color: var(--slate); font-size: 13px; margin-bottom: 18px; }
+.tj-modal-close { position: absolute; top: 14px; right: 16px; background: none; border: none; font-size: 20px; color: var(--slate); line-height: 1; }
+
+.tj-source-choice { display: flex; gap: 10px; margin-bottom: 18px; }
+.tj-source-btn {
+  flex: 1; border: 1px solid var(--line-paper); background: #fff; border-radius: 7px;
+  padding: 16px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600; color: var(--graphite);
+}
+.tj-source-btn:hover { border-color: var(--seal); }
+.tj-source-btn.active { border-color: var(--seal); background: #fdf5f6; }
+
+.tj-camera-wrap { position: relative; border-radius: 8px; overflow: hidden; background: #000; margin-bottom: 14px; }
+.tj-camera-wrap video, .tj-camera-wrap canvas { width: 100%; display: block; }
+.tj-cam-shutter {
+  position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+  width: 56px; height: 56px; border-radius: 50%; background: #fff; border: 3px solid rgba(0,0,0,0.25);
+}
+.tj-cam-retake { position: absolute; top: 10px; right: 10px; background: rgba(20,27,46,0.7); color: #fff; border: none; border-radius: 5px; padding: 6px 10px; font-size: 12px; }
+.tj-cam-switch {
+  position: absolute; top: 10px; right: 10px; width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(20,27,46,0.55); color: #fff; border: none; display: flex; align-items: center; justify-content: center;
+}
+.tj-cam-switch:hover { background: rgba(20,27,46,0.8); }
+.tj-file-drop {
+  border: 1.5px dashed var(--line-paper); border-radius: 8px; padding: 26px 14px;
+  text-align: center; color: var(--slate); font-size: 13px; margin-bottom: 14px; cursor: pointer;
+}
+.tj-file-drop:hover { border-color: var(--brass); }
+.tj-file-drop.has-file { border-style: solid; border-color: var(--seal); color: var(--graphite); }
+
+.tj-modal-actions { display: flex; gap: 10px; margin-top: 4px; }
+.tj-secondary-btn { flex: 1; background: none; border: 1px solid var(--line-paper); border-radius: 6px; padding: 11px; font-size: 13.5px; font-weight: 600; color: var(--slate); }
+.tj-modal .tj-primary-btn { flex: 2; margin-top: 0; }
+.tj-modal .tj-primary-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.tj-view-modal img, .tj-view-modal iframe { width: 100%; border-radius: 6px; margin-bottom: 14px; }
+.tj-view-actions { display: flex; gap: 10px; }
+#tj-pdf-pages { display: flex; flex-direction: column; gap: 10px; }
+#tj-pdf-pages canvas { width: 100%; height: auto; display: block; border: 1px solid var(--line-paper); border-radius: 6px; }
+.tj-modal-overlay.tj-fullscreen-overlay { padding: 0; }
+.tj-view-modal.tj-fullscreen { max-width: none; width: 100%; height: 100%; max-height: 100%; border-radius: 0; }
+.tj-danger-btn { flex: 1; background: none; border: 1px solid rgba(166,49,74,0.35); color: var(--seal); border-radius: 6px; padding: 10px; font-size: 13px; font-weight: 600; }
+.tj-danger-btn:hover { background: rgba(166,49,74,0.06); }
+
+.tj-toast {
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(0);
+  background: var(--ink); color: var(--paper); padding: 10px 18px; border-radius: 6px;
+  font-size: 13px; opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .2s ease; z-index: 80;
+}
+.tj-toast.show { opacity: 1; transform: translateX(-50%) translateY(-6px); }
+</style>
+
+<div id="tijori-root">
+  <!-- LOGIN -->
+  <div class="tj-login" id="tj-login-screen">
+    <div class="tj-login-brand">
+      <div>
+        <div class="tj-seal"><span>त</span></div>
+        <h1>Tijori</h1>
+        <p>One locked box for every document you'd otherwise dig through drawers for — PAN, Aadhaar, licence, certificates, and anything else worth keeping safe.</p>
+        <div class="tj-marks">
+          <span class="tj-mark-chip">PAN Card</span>
+          <span class="tj-mark-chip">Aadhaar</span>
+          <span class="tj-mark-chip">Driving Licence</span>
+          <span class="tj-mark-chip">Leaving Certificate</span>
+          <span class="tj-mark-chip">+ more</span>
+        </div>
+      </div>
+      <div class="tj-login-foot">Stored only under your own sign-in, on this device's Tijori space.</div>
+    </div>
+    <div class="tj-login-form-side">
+      <div class="tj-form-card">
+        <h2 id="tj-form-heading">Welcome back</h2>
+        <p class="tj-sub" id="tj-form-sub">Sign in to open your vault.</p>
+
+        <button class="tj-google-btn" id="tj-google-btn">
+          <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.81.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.98v2.33A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.97 10.72A5.4 5.4 0 0 1 3.68 9c0-.6.1-1.18.29-1.72V4.95H.98A9 9 0 0 0 0 9c0 1.45.35 2.83.98 4.05l2.99-2.33z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.51.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .98 4.95l2.99 2.33C4.68 5.16 6.66 3.58 9 3.58z"/></svg>
+          <span id="tj-google-btn-label">Continue with Google</span>
+        </button>
+        <div class="tj-divider">or use name &amp; email</div>
+
+        <div id="tj-error" class="tj-error" style="display:none;"></div>
+
+        <div class="tj-field" id="tj-name-field">
+          <label>Full name</label>
+          <input type="text" id="tj-name-input" placeholder="e.g. Aarav Sharma" />
+        </div>
+        <div class="tj-field">
+          <label>Email</label>
+          <input type="email" id="tj-email-input" placeholder="you@example.com" value="vansh@gmail.com" />
+        </div>
+
+        <button class="tj-primary-btn" id="tj-submit-btn">Sign in</button>
+
+        <div class="tj-toggle-line">
+          <span id="tj-toggle-text">New here?</span>
+          <button id="tj-toggle-btn">Create an account</button>
+        </div>
+
+        <div class="tj-form-note">
+          This vault is set up for one account only — vansh@gmail.com. "Continue with Google" simulates Google's one-tap flow using the name and email you enter — a real Google OAuth button needs a registered app and backend server, which this page doesn't have. Everything else — sign-up, sign-in, uploads, camera capture, and storage — is fully working.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="tj-dash" id="tj-dash-screen">
+    <div class="tj-topbar">
+      <div class="tj-topbar-brand">
+        <div class="tj-seal"><span>त</span></div>
+        <strong>Tijori</strong>
+      </div>
+      <div class="tj-user-chip">
+        <div class="tj-user-avatar" id="tj-avatar">A</div>
+        <span class="tj-user-name" id="tj-user-name-label">—</span>
+        <button class="tj-logout-btn" id="tj-logout-btn">Sign out</button>
+      </div>
+    </div>
+    <div class="tj-dash-body">
+      <!-- Category grid view -->
+      <div id="tj-grid-view">
+        <div class="tj-dash-head">
+          <h2>Your documents</h2>
+          <span class="tj-dash-stat" id="tj-dash-stat">0 documents stored</span>
+        </div>
+        <div class="tj-grid" id="tj-cat-grid"></div>
+      </div>
+
+      <!-- Category detail view -->
+      <div id="tj-detail-view" style="display:none;">
+        <button class="tj-back-btn" id="tj-back-btn">&larr; All documents</button>
+        <div class="tj-detail-head">
+          <div class="tj-detail-title">
+            <div class="tj-cat-mono" id="tj-detail-mono">P</div>
+            <h2 id="tj-detail-title" style="font-size:22px;">Category</h2>
+          </div>
+          <button class="tj-add-btn" id="tj-add-doc-btn">+ Add document</button>
+        </div>
+        <div id="tj-doc-area"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD DOCUMENT MODAL -->
+  <div class="tj-modal-overlay" id="tj-add-overlay">
+    <div class="tj-modal" style="position:relative;">
+      <button class="tj-modal-close" id="tj-add-close">&times;</button>
+      <h3>Add to <span id="tj-add-cat-name">category</span></h3>
+      <p class="tj-sub">Upload a scan or photo, or capture it now with your camera.</p>
+
+      <div class="tj-source-choice">
+        <button class="tj-source-btn active" id="tj-src-upload" data-src="upload">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 15V4M12 4l-4 4M12 4l4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+          Upload file
+        </button>
+        <button class="tj-source-btn" id="tj-src-camera" data-src="camera">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.3"/></svg>
+          Use camera
+        </button>
+      </div>
+
+      <div id="tj-upload-panel">
+        <label class="tj-file-drop" id="tj-file-drop">
+          <span id="tj-file-drop-label">Click to choose an image (up to 10 MB, auto-compressed) or PDF (up to ~3.3 MB)</span>
+          <input type="file" id="tj-file-input" accept="image/*,application/pdf" style="display:none;" />
+        </label>
+      </div>
+
+      <div id="tj-camera-panel" style="display:none;">
+        <div class="tj-camera-wrap" id="tj-camera-wrap">
+          <video id="tj-cam-video" autoplay playsinline muted></video>
+          <button class="tj-cam-switch" id="tj-cam-switch" title="Switch camera">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 2l4 4-4 4"/><path d="M21 6H8a4 4 0 0 0-4 4v1"/><path d="M7 22l-4-4 4-4"/><path d="M3 18h13a4 4 0 0 0 4-4v-1"/></svg>
+          </button>
+          <button class="tj-cam-shutter" id="tj-cam-shutter"></button>
+        </div>
+        <div id="tj-cam-status" class="tj-sub" style="margin-top:-6px;"></div>
+      </div>
+
+      <div class="tj-field">
+        <label>Document name</label>
+        <input type="text" id="tj-doc-name-input" placeholder="e.g. PAN card - front" />
+      </div>
+
+      <div class="tj-modal-actions">
+        <button class="tj-secondary-btn" id="tj-add-cancel">Cancel</button>
+        <button class="tj-primary-btn" id="tj-add-save" disabled>Save document</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW DOCUMENT MODAL -->
+  <div class="tj-modal-overlay" id="tj-view-overlay">
+    <div class="tj-modal tj-view-modal" style="position:relative;">
+      <button class="tj-modal-close" id="tj-view-close">&times;</button>
+      <h3 id="tj-view-name">Document</h3>
+      <p class="tj-sub" id="tj-view-date"></p>
+      <div id="tj-view-body"></div>
+      <div class="tj-view-actions">
+        <button class="tj-danger-btn" id="tj-view-delete">Delete document</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW CATEGORY MODAL -->
+  <div class="tj-modal-overlay" id="tj-newcat-overlay">
+    <div class="tj-modal" style="position:relative; max-width:380px;">
+      <button class="tj-modal-close" id="tj-newcat-close">&times;</button>
+      <h3>Add a document type</h3>
+      <p class="tj-sub">Give it a name — you'll be able to add documents to it right away.</p>
+      <div class="tj-field">
+        <label>Document type name</label>
+        <input type="text" id="tj-newcat-input" placeholder="e.g. Insurance Policy, Property Papers" />
+      </div>
+      <div id="tj-newcat-error" class="tj-error" style="display:none;"></div>
+      <div class="tj-modal-actions">
+        <button class="tj-secondary-btn" id="tj-newcat-cancel">Cancel</button>
+        <button class="tj-primary-btn" id="tj-newcat-save">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tj-toast" id="tj-toast"></div>
+</div>
+
+<script>
+(function() {
+  const root = document.getElementById('tijori-root');
+
+  const CATEGORIES = [
+    { id: 'pan',       label: 'PAN Card',                     color: '#a6314a' },
+    { id: 'aadhaar',   label: 'Aadhaar Card',                 color: '#2f6f4f' },
+    { id: 'driving',   label: 'Driving Licence',               color: '#3457a6' },
+    { id: 'passport',  label: 'Passport',                      color: '#7a4e9e' },
+    { id: 'voter',     label: 'Voter ID',                      color: '#b8892f' },
+    { id: 'leaving',   label: 'Leaving / Transfer Certificate',color: '#b5651d' },
+    { id: 'birth',     label: 'Birth Certificate',             color: '#2e8b8b' },
+    { id: 'marriage',  label: 'Marriage Certificate',          color: '#c2554e' },
+    { id: 'other',     label: 'Other Documents',               color: '#5b5f6b' },
+  ];
+
+  const CUSTOM_PALETTE = ['#8a4f2e', '#3d6b8a', '#6b7f2e', '#8a2e6b', '#2e5a8a', '#a6631e', '#4a2e8a', '#2e8a5a'];
+
+  const ALLOWED_EMAIL = 'vansh@gmail.com';
+  let mode = 'signin'; // signin | signup
+  let currentUser = null; // { name, email }
+  let index = []; // [{id, category, name, type, addedAt, thumb}]
+  let customCategories = []; // [{id, label, color}]
+  let currentCategory = null;
+  let addSource = 'upload';
+  let pendingDoc = null; // { fullDataUrl, thumb, type, filename }
+  let camStream = null;
+
+  const $ = (sel) => root.querySelector(sel);
+  const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html !== undefined) e.innerHTML = html; return e; };
+
+  function allCategories() { return CATEGORIES.concat(customCategories); }
+  function customCatsKey(email) { return `tijori:customcats:${email}`; }
+
+  function toast(msg) {
+    const t = $('#tj-toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toast._tm);
+    toast._tm = setTimeout(() => t.classList.remove('show'), 2400);
+  }
+
+  function catById(id) { return allCategories().find(c => c.id === id); }
+
+  // ---------- storage helpers ----------
+  async function safeGet(key) {
+    try {
+      const r = await window.storage.get(key, false);
+      return r ? JSON.parse(r.value) : null;
+    } catch (e) { return null; }
+  }
+  async function safeSet(key, value) {
+    try {
+      const r = await window.storage.set(key, JSON.stringify(value), false);
+      return !!r;
+    } catch (e) { return false; }
+  }
+  async function safeDelete(key) {
+    try { await window.storage.delete(key, false); } catch (e) {}
+  }
+
+  function profileKey(email) { return `tijori:profile:${email}`; }
+  function indexKey(email) { return `tijori:index:${email}`; }
+  function docKey(email, id) { return `tijori:doc:${email}:${id}`; }
+
+  // ---------- image processing ----------
+  function readFileAsDataURL(file) {
+    return new Promise((resolve, reject) => {
+      const r = new FileReader();
+      r.onload = () => resolve(r.result);
+      r.onerror = () => reject(new Error('read failed'));
+      r.readAsDataURL(file);
+    });
+  }
+
+  function loadImage(src) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => reject(new Error('image load failed'));
+      img.src = src;
+    });
+  }
+
+  async function resizeToDataURL(src, maxDim, quality) {
+    const img = await loadImage(src);
+    let { width, height } = img;
+    if (width > maxDim || height > maxDim) {
+      if (width >= height) { height = Math.round(height * (maxDim / width)); width = maxDim; }
+      else { width = Math.round(width * (maxDim / height)); height = maxDim; }
+    }
+    const canvas = document.createElement('canvas');
+    canvas.width = width; canvas.height = height;
+    canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+    return canvas.toDataURL('image/jpeg', quality);
+  }
+
+  // Storage keys have a hard 5 MB ceiling and base64 inflates size by ~33%,
+  // so keep encoded images comfortably under that no matter how large the source is.
+  const MAX_ENCODED_BYTES = 4.5 * 1024 * 1024;
+  function dataUrlBytes(dataUrl) { return dataUrl.length - dataUrl.indexOf(',') - 1; }
+
+  async function resizeWithBudget(src) {
+    const attempts = [
+      [1800, 0.82], [1800, 0.68], [1400, 0.6], [1100, 0.5], [850, 0.4], [650, 0.32],
+    ];
+    let last = null;
+    for (const [maxDim, quality] of attempts) {
+      last = await resizeToDataURL(src, maxDim, quality);
+      if (dataUrlBytes(last) <= MAX_ENCODED_BYTES) return last;
+    }
+    return last;
+  }
+
+  // ---------- auth ----------
+  function setMode(m) {
+    mode = m;
+    if (m === 'signup') {
+      $('#tj-form-heading').textContent = 'Create your vault';
+      $('#tj-form-sub').textContent = 'Set up Tijori with your name and email.';
+      $('#tj-name-field').style.display = 'block';
+      $('#tj-submit-btn').textContent = 'Create account';
+      $('#tj-toggle-text').textContent = 'Already have a vault?';
+      $('#tj-toggle-btn').textContent = 'Sign in instead';
+      $('#tj-google-btn-label').textContent = 'Sign up with Google';
+    } else {
+      $('#tj-form-heading').textContent = 'Welcome back';
+      $('#tj-form-sub').textContent = 'Sign in to open your vault.';
+      $('#tj-name-field').style.display = 'none';
+      $('#tj-submit-btn').textContent = 'Sign in';
+      $('#tj-toggle-text').textContent = 'New here?';
+      $('#tj-toggle-btn').textContent = 'Create an account';
+      $('#tj-google-btn-label').textContent = 'Continue with Google';
+    }
+    $('#tj-error').style.display = 'none';
+  }
+
+  function showError(msg) {
+    const e = $('#tj-error');
+    e.textContent = msg;
+    e.style.display = 'block';
+  }
+
+  async function doAuth(viaGoogle) {
+    const email = $('#tj-email-input').value.trim().toLowerCase();
+    let name = $('#tj-name-input').value.trim();
+    if (!email || !email.includes('@')) { showError('Enter a valid email address.'); return; }
+    if (email !== ALLOWED_EMAIL) { showError('This vault is private — only ' + ALLOWED_EMAIL + ' can sign in.'); return; }
+
+    if (viaGoogle && !name) {
+      name = email.split('@')[0].replace(/[._]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    const key = profileKey(email);
+    let profile = await safeGet(key);
+
+    if (mode === 'signup' || viaGoogle) {
+      if (!profile) {
+        if (!name) { showError('Enter your full name.'); return; }
+        profile = { name, email, createdAt: Date.now() };
+        const ok = await safeSet(key, profile);
+        if (!ok) { showError('Could not create your vault right now — try again.'); return; }
+      }
+    } else {
+      if (!profile) { showError('No vault found for that email yet — create one instead.'); return; }
+    }
+
+    currentUser = profile;
+    index = (await safeGet(indexKey(currentUser.email))) || [];
+    customCategories = (await safeGet(customCatsKey(currentUser.email))) || [];
+    enterDashboard();
+  }
+
+  function enterDashboard() {
+    $('#tj-login-screen').style.display = 'none';
+    $('#tj-dash-screen').style.display = 'flex';
+    $('#tj-user-name-label').textContent = currentUser.name;
+    $('#tj-avatar').textContent = currentUser.name.trim()[0].toUpperCase();
+    currentCategory = null;
+    renderGrid();
+  }
+
+  function signOut() {
+    currentUser = null;
+    index = [];
+    customCategories = [];
+    currentCategory = null;
+    stopCamera();
+    $('#tj-dash-screen').style.display = 'none';
+    $('#tj-login-screen').style.display = 'grid';
+    $('#tj-email-input').value = '';
+    $('#tj-name-input').value = '';
+    setMode('signin');
+  }
+
+  // ---------- dashboard rendering ----------
+  function renderGrid() {
+    $('#tj-grid-view').style.display = 'block';
+    $('#tj-detail-view').style.display = 'none';
+    const total = index.length;
+    $('#tj-dash-stat').textContent = total === 0 ? 'No documents yet' : `${total} document${total === 1 ? '' : 's'} stored`;
+
+    const grid = $('#tj-cat-grid');
+    grid.innerHTML = '';
+    allCategories().forEach(cat => {
+      const docs = index.filter(d => d.category === cat.id);
+      const card = el('button', 'tj-cat-card');
+      card.innerHTML = `
+        <div class="tj-cat-tab" style="background:${cat.color}"></div>
+        <div class="tj-cat-inner">
+          <div class="tj-cat-top">
+            <div class="tj-cat-mono" style="background:${cat.color}">${cat.label[0]}</div>
+            <div>
+              <div class="tj-cat-title">${cat.label}</div>
+              <div class="tj-cat-count">${docs.length} document${docs.length === 1 ? '' : 's'}</div>
+            </div>
+          </div>
+          <div class="tj-cat-thumbs">
+            ${docs.slice(0,4).map(d => d.thumb ? `<img class="tj-cat-thumb" src="${d.thumb}">` : `<div class="tj-cat-thumb" style="display:flex;align-items:center;justify-content:center;background:${cat.color}22;color:${cat.color};font-size:10px;font-weight:700;">PDF</div>`).join('') || '<span class="tj-cat-empty">Nothing added yet</span>'}
+          </div>
+        </div>`;
+      card.addEventListener('click', () => openCategory(cat.id));
+      grid.appendChild(card);
+    });
+
+    const addCard = el('button', 'tj-cat-card tj-cat-card-new');
+    addCard.innerHTML = `
+      <div class="tj-cat-inner" style="align-items:center; justify-content:center; text-align:center; flex:1;">
+        <div class="tj-cat-mono" style="background:none;border:1.5px dashed var(--slate);color:var(--slate);">+</div>
+        <div class="tj-cat-title" style="color:var(--slate);">Add a document type</div>
+        <div class="tj-cat-count">For anything not listed above</div>
+      </div>`;
+    addCard.addEventListener('click', openNewCategoryModal);
+    grid.appendChild(addCard);
+  }
+
+  function openCategory(catId) {
+    currentCategory = catId;
+    const cat = catById(catId);
+    $('#tj-grid-view').style.display = 'none';
+    $('#tj-detail-view').style.display = 'block';
+    $('#tj-detail-title').textContent = cat.label;
+    $('#tj-detail-mono').textContent = cat.label[0];
+    $('#tj-detail-mono').style.background = cat.color;
+    renderDocArea();
+  }
+
+  function openNewCategoryModal() {
+    $('#tj-newcat-input').value = '';
+    $('#tj-newcat-error').style.display = 'none';
+    $('#tj-newcat-overlay').style.display = 'flex';
+    setTimeout(() => $('#tj-newcat-input').focus(), 30);
+  }
+
+  function closeNewCategoryModal() {
+    $('#tj-newcat-overlay').style.display = 'none';
+  }
+
+  function slugify(text) {
+    return 'c' + text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 30) + Date.now().toString(36).slice(-4);
+  }
+
+  async function saveNewCategory() {
+    const label = $('#tj-newcat-input').value.trim();
+    const errEl = $('#tj-newcat-error');
+    if (!label) { errEl.textContent = 'Give this document type a name.'; errEl.style.display = 'block'; return; }
+    if (allCategories().some(c => c.label.toLowerCase() === label.toLowerCase())) {
+      errEl.textContent = 'You already have a document type with that name.'; errEl.style.display = 'block'; return;
+    }
+    const color = CUSTOM_PALETTE[customCategories.length % CUSTOM_PALETTE.length];
+    const newCat = { id: slugify(label), label, color };
+    const updated = customCategories.concat(newCat);
+    const ok = await safeSet(customCatsKey(currentUser.email), updated);
+    if (!ok) { errEl.textContent = 'Could not save this document type — try again.'; errEl.style.display = 'block'; return; }
+    customCategories = updated;
+    closeNewCategoryModal();
+    openCategory(newCat.id);
+  }
+
+  function renderDocArea() {
+    const docs = index.filter(d => d.category === currentCategory).sort((a,b) => b.addedAt - a.addedAt);
+    const area = $('#tj-doc-area');
+    if (docs.length === 0) {
+      area.innerHTML = `<div class="tj-empty-state"><h3>Nothing filed here yet</h3><p>Add a scan, photo, or camera capture of this document to keep it in your vault.</p></div>`;
+      return;
+    }
+    const grid = el('div', 'tj-doc-grid');
+    docs.forEach(d => {
+      const card = el('button', 'tj-doc-card');
+      const thumbHtml = d.thumb
+        ? `<img src="${d.thumb}">`
+        : `<div class="tj-doc-pdf-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path d="M15 2v5h5"/></svg></div>`;
+      card.innerHTML = `
+        <div class="tj-doc-thumb-wrap">${thumbHtml}</div>
+        <div class="tj-doc-meta">
+          <div class="tj-doc-name">${escapeHtml(d.name)}</div>
+          <div class="tj-doc-date">${new Date(d.addedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
+        </div>`;
+      card.addEventListener('click', () => openViewer(d));
+      grid.appendChild(card);
+    });
+    area.innerHTML = '';
+    area.appendChild(grid);
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  // ---------- document viewer ----------
+  let currentViewBlobUrl = null;
+
+  function releaseViewBlobUrl() {
+    if (currentViewBlobUrl) { URL.revokeObjectURL(currentViewBlobUrl); currentViewBlobUrl = null; }
+  }
+
+  function dataUrlToBlob(dataUrl) {
+    const [meta, b64] = dataUrl.split(',');
+    const mime = (meta.match(/data:(.*?);base64/) || [,'application/octet-stream'])[1];
+    const binary = atob(b64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new Blob([bytes], { type: mime });
+  }
+
+  function dataUrlToUint8Array(dataUrl) {
+    const binary = atob(dataUrl.split(',')[1]);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return bytes;
+  }
+
+  // ---------- in-browser PDF rendering (avoids relying on the browser's
+  // native PDF plugin, which doesn't reliably preview or open blob PDFs
+  // from inside an embedded/sandboxed page) ----------
+  let pdfJsLoadPromise = null;
+  function ensurePdfJs() {
+    if (window.pdfjsLib) return Promise.resolve(window.pdfjsLib);
+    if (pdfJsLoadPromise) return pdfJsLoadPromise;
+    pdfJsLoadPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+      script.onload = () => {
+        try {
+          window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+          resolve(window.pdfjsLib);
+        } catch (e) { reject(e); }
+      };
+      script.onerror = () => reject(new Error('Could not load PDF renderer'));
+      document.head.appendChild(script);
+    });
+    return pdfJsLoadPromise;
+  }
+
+  async function renderPdfPages(dataUrl, container) {
+    const pdfjsLib = await ensurePdfJs();
+    const pdf = await pdfjsLib.getDocument({ data: dataUrlToUint8Array(dataUrl) }).promise;
+    container.innerHTML = '';
+    const targetWidth = Math.max(container.clientWidth || 0, 260);
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      const page = await pdf.getPage(pageNum);
+      const unscaled = page.getViewport({ scale: 1 });
+      const viewport = page.getViewport({ scale: targetWidth / unscaled.width });
+      const canvas = document.createElement('canvas');
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
+      container.appendChild(canvas);
+    }
+    return pdf.numPages;
+  }
+
+  async function openViewer(entry) {
+    releaseViewBlobUrl();
+    $('#tj-view-name').textContent = entry.name;
+    $('#tj-view-date').textContent = 'Added ' + new Date(entry.addedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+    const body = $('#tj-view-body');
+    body.innerHTML = '<p class="tj-sub">Loading…</p>';
+    $('#tj-view-overlay').style.display = 'flex';
+
+    const full = await safeGet(docKey(currentUser.email, entry.id));
+    if (!full) { body.innerHTML = '<p class="tj-sub">Could not load this document.</p>'; return; }
+
+    if (entry.type === 'pdf') {
+      try {
+        const blob = dataUrlToBlob(full.dataUrl);
+        currentViewBlobUrl = URL.createObjectURL(blob);
+        body.innerHTML = `
+          <div id="tj-pdf-pages"><p class="tj-sub">Loading preview…</p></div>
+          <div style="display:flex; gap:10px; margin-bottom:14px;">
+            <button type="button" class="tj-secondary-btn" id="tj-pdf-fullscreen-btn">View file</button>
+            <a href="${currentViewBlobUrl}" download="${escapeHtml(entry.name)}.pdf" class="tj-secondary-btn" style="flex:1; text-decoration:none; text-align:center; display:block;">Download</a>
+          </div>`;
+
+        const pagesEl = $('#tj-pdf-pages');
+        renderPdfPages(full.dataUrl, pagesEl).catch(() => {
+          pagesEl.innerHTML = '<p class="tj-sub">This PDF could not be previewed here. Try the Download button instead.</p>';
+        });
+
+        $('#tj-pdf-fullscreen-btn').addEventListener('click', () => {
+          const modal = $('.tj-view-modal');
+          const overlay = $('#tj-view-overlay');
+          const goingFullscreen = !modal.classList.contains('tj-fullscreen');
+          modal.classList.toggle('tj-fullscreen', goingFullscreen);
+          overlay.classList.toggle('tj-fullscreen-overlay', goingFullscreen);
+          $('#tj-pdf-fullscreen-btn').textContent = goingFullscreen ? 'Exit full view' : 'View file';
+          renderPdfPages(full.dataUrl, pagesEl).catch(() => {});
+        });
+      } catch (e) {
+        body.innerHTML = '<p class="tj-sub">This PDF could not be previewed. Try downloading it instead.</p>';
+      }
+    } else {
+      body.innerHTML = `<img src="${full.dataUrl}">`;
+    }
+
+    $('#tj-view-delete').onclick = async () => {
+      await safeDelete(docKey(currentUser.email, entry.id));
+      index = index.filter(d => d.id !== entry.id);
+      await safeSet(indexKey(currentUser.email), index);
+      releaseViewBlobUrl();
+      $('#tj-view-overlay').style.display = 'none';
+      $('#tj-view-overlay').classList.remove('tj-fullscreen-overlay');
+      $('.tj-view-modal').classList.remove('tj-fullscreen');
+      renderDocArea();
+      renderGrid();
+      toast('Document deleted');
+    };
+  }
+
+  // ---------- add document flow ----------
+  function openAddModal() {
+    const cat = catById(currentCategory);
+    $('#tj-add-cat-name').textContent = cat.label;
+    $('#tj-doc-name-input').value = '';
+    $('#tj-file-drop-label').textContent = 'Click to choose an image (up to 10 MB, auto-compressed) or PDF (up to ~3.3 MB)';
+    $('#tj-file-drop').classList.remove('has-file');
+    $('#tj-file-input').value = '';
+    pendingDoc = null;
+    setAddSource('upload');
+    $('#tj-add-save').disabled = true;
+    $('#tj-add-overlay').style.display = 'flex';
+  }
+
+  function closeAddModal() {
+    $('#tj-add-overlay').style.display = 'none';
+    stopCamera();
+  }
+
+  function setAddSource(src) {
+    addSource = src;
+    $('#tj-src-upload').classList.toggle('active', src === 'upload');
+    $('#tj-src-camera').classList.toggle('active', src === 'camera');
+    $('#tj-upload-panel').style.display = src === 'upload' ? 'block' : 'none';
+    $('#tj-camera-panel').style.display = src === 'camera' ? 'block' : 'none';
+    pendingDoc = null;
+    $('#tj-add-save').disabled = true;
+    if (src === 'camera') startCamera(); else stopCamera();
+  }
+
+  let currentFacing = 'environment';
+  let multipleCamerasLikely = false;
+
+  async function startCamera(preferredFacing) {
+    stopCamera();
+    if (preferredFacing) currentFacing = preferredFacing;
+    const status = $('#tj-cam-status');
+    status.textContent = 'Requesting camera access…';
+
+    const attempts = [
+      { video: { facingMode: { ideal: currentFacing }, width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false },
+      { video: { facingMode: currentFacing }, audio: false },
+      { video: true, audio: false },
+    ];
+
+    let lastErr = null;
+    for (const constraints of attempts) {
+      try {
+        camStream = await navigator.mediaDevices.getUserMedia(constraints);
+        lastErr = null;
+        break;
+      } catch (e) { lastErr = e; }
+    }
+
+    if (!camStream) {
+      status.textContent = 'Camera access was blocked or unavailable in this window — try "Upload file" instead, or allow camera permission and retry.';
+      return;
+    }
+
+    const video = $('#tj-cam-video');
+    if (video) {
+      video.srcObject = camStream;
+      video.style.display = 'block';
+    }
+    status.textContent = 'Line up the document, then tap the shutter.';
+
+    try {
+      const devices = await navigator.mediaDevices.enumerateDevices();
+      multipleCamerasLikely = devices.filter(d => d.kind === 'videoinput').length > 1;
+      const switchBtn = $('#tj-cam-switch');
+      if (switchBtn) switchBtn.style.display = multipleCamerasLikely ? 'flex' : 'none';
+    } catch (e) { /* device list unavailable, leave switch button as-is */ }
+  }
+
+  function stopCamera() {
+    if (camStream) { camStream.getTracks().forEach(t => t.stop()); camStream = null; }
+  }
+
+  function toggleCameraFacing() {
+    currentFacing = currentFacing === 'environment' ? 'user' : 'environment';
+    startCamera(currentFacing);
+  }
+
+  async function captureFromCamera() {
+    const video = $('#tj-cam-video');
+    if (!video || !video.videoWidth) { toast('Camera is still starting up — wait a moment and try again.'); return; }
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    const rawUrl = canvas.toDataURL('image/jpeg', 0.9);
+    stopCamera();
+    $('#tj-cam-status').textContent = 'Captured. Processing…';
+    const full = await resizeWithBudget(rawUrl);
+    const thumb = await resizeToDataURL(rawUrl, 160, 0.55);
+    pendingDoc = { fullDataUrl: full, thumb, type: 'image', filename: 'Camera capture' };
+    rebuildCameraWrap(true, full);
+    $('#tj-add-save').disabled = false;
+    if (!$('#tj-doc-name-input').value) $('#tj-doc-name-input').value = catById(currentCategory).label;
+  }
+
+  function rebuildCameraWrap(showCaptured, imgUrl) {
+    if (showCaptured) {
+      $('#tj-camera-wrap').innerHTML = `<img src="${imgUrl}"><button class="tj-cam-retake" id="tj-cam-retake">Retake</button>`;
+    } else {
+      $('#tj-camera-wrap').innerHTML = `
+        <video id="tj-cam-video" autoplay playsinline muted></video>
+        <button class="tj-cam-switch" id="tj-cam-switch" title="Switch camera" style="display:${multipleCamerasLikely ? 'flex' : 'none'};">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 2l4 4-4 4"/><path d="M21 6H8a4 4 0 0 0-4 4v1"/><path d="M7 22l-4-4 4-4"/><path d="M3 18h13a4 4 0 0 0 4-4v-1"/></svg>
+        </button>
+        <button class="tj-cam-shutter" id="tj-cam-shutter"></button>`;
+    }
+  }
+
+  async function handleFileChosen(file) {
+    if (!file) return;
+    const isPdf = file.type === 'application/pdf';
+    const isImage = file.type.startsWith('image/');
+    if (!isPdf && !isImage) { toast('Please choose an image or a PDF file.'); return; }
+    if (file.size > 10 * 1024 * 1024) { toast('That file is over 10 MB — please choose a smaller file.'); return; }
+
+    $('#tj-file-drop-label').textContent = 'Processing ' + file.name + '…';
+    const raw = await readFileAsDataURL(file);
+
+    if (isImage) {
+      const full = await resizeWithBudget(raw);
+      const thumb = await resizeToDataURL(raw, 160, 0.55);
+      pendingDoc = { fullDataUrl: full, thumb, type: 'image', filename: file.name };
+    } else {
+      if (dataUrlBytes(raw) > MAX_ENCODED_BYTES) {
+        $('#tj-file-drop-label').textContent = 'Click to choose an image (up to 10 MB, auto-compressed) or PDF (up to ~3.3 MB)';
+        $('#tj-file-drop').classList.remove('has-file');
+        toast('This PDF is too large to store — the vault can hold PDFs up to about 3.3 MB. Try a compressed or lower-resolution export.');
+        return;
+      }
+      pendingDoc = { fullDataUrl: raw, thumb: null, type: 'pdf', filename: file.name };
+    }
+    $('#tj-file-drop-label').textContent = '✓ ' + file.name;
+    $('#tj-file-drop').classList.add('has-file');
+    $('#tj-add-save').disabled = false;
+    if (!$('#tj-doc-name-input').value) $('#tj-doc-name-input').value = file.name.replace(/\.[a-zA-Z0-9]+$/, '');
+  }
+
+  async function saveDocument() {
+    if (!pendingDoc) return;
+    const name = $('#tj-doc-name-input').value.trim() || catById(currentCategory).label;
+    const id = 'd' + Date.now() + Math.random().toString(36).slice(2, 7);
+    const entry = { id, category: currentCategory, name, type: pendingDoc.type, addedAt: Date.now(), thumb: pendingDoc.thumb };
+
+    const savedDoc = await safeSet(docKey(currentUser.email, id), { dataUrl: pendingDoc.fullDataUrl });
+    if (!savedDoc) { toast('Could not save the document — it may be too large.'); return; }
+
+    index.push(entry);
+    const savedIndex = await safeSet(indexKey(currentUser.email), index);
+    if (!savedIndex) { index.pop(); await safeDelete(docKey(currentUser.email, id)); toast('Could not update your vault index — please try again.'); return; }
+
+    closeAddModal();
+    renderDocArea();
+    renderGrid();
+    toast('Document saved to ' + catById(currentCategory).label);
+  }
+
+  // ---------- wire up events ----------
+  $('#tj-toggle-btn').addEventListener('click', () => setMode(mode === 'signin' ? 'signup' : 'signin'));
+  $('#tj-submit-btn').addEventListener('click', () => doAuth(false));
+  $('#tj-google-btn').addEventListener('click', () => doAuth(true));
+  $('#tj-logout-btn').addEventListener('click', signOut);
+  $('#tj-back-btn').addEventListener('click', renderGrid);
+  $('#tj-add-doc-btn').addEventListener('click', openAddModal);
+  $('#tj-add-close').addEventListener('click', closeAddModal);
+  $('#tj-add-cancel').addEventListener('click', closeAddModal);
+  $('#tj-src-upload').addEventListener('click', () => setAddSource('upload'));
+  $('#tj-src-camera').addEventListener('click', () => setAddSource('camera'));
+  $('#tj-file-input').addEventListener('change', (e) => handleFileChosen(e.target.files[0]));
+  $('#tj-add-save').addEventListener('click', saveDocument);
+  $('#tj-view-close').addEventListener('click', () => {
+    $('#tj-view-overlay').style.display = 'none';
+    $('#tj-view-overlay').classList.remove('tj-fullscreen-overlay');
+    $('.tj-view-modal').classList.remove('tj-fullscreen');
+    releaseViewBlobUrl();
+  });
+  $('#tj-newcat-close').addEventListener('click', closeNewCategoryModal);
+  $('#tj-newcat-cancel').addEventListener('click', closeNewCategoryModal);
+  $('#tj-newcat-save').addEventListener('click', saveNewCategory);
+  $('#tj-newcat-input').addEventListener('keydown', (e) => { if (e.key === 'Enter') saveNewCategory(); });
+  root.addEventListener('click', (e) => {
+    const shutter = e.target.closest('#tj-cam-shutter');
+    const retake = e.target.closest('#tj-cam-retake');
+    const switchBtn = e.target.closest('#tj-cam-switch');
+    if (shutter) captureFromCamera();
+    if (retake) { pendingDoc = null; $('#tj-add-save').disabled = true; rebuildCameraWrap(false); startCamera(); }
+    if (switchBtn) toggleCameraFacing();
+  });
+
+  ['tj-name-input', 'tj-email-input'].forEach(id => {
+    $('#' + id).addEventListener('keydown', (e) => { if (e.key === 'Enter') doAuth(false); });
+  });
+
+  setMode('signin');
+})();
+</script>
