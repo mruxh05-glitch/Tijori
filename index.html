@@ -1,5 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- Forcing a fixed layout width (instead of "width=device-width") stops
+     phones from switching into their normal mobile rendering, so Tijori
+     renders as a shrunk-down copy of the desktop layout on Android/iOS
+     too — matching the desktop look, as requested. Users can pinch-zoom
+     in to tap smaller controls. -->
+<meta name="viewport" content="width=1024">
+<title>Tijori — Document Vault</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap');
+body { margin: 0; background: #141b2e; display: flex; justify-content: center; padding: 24px 12px; box-sizing: border-box; }
+body > div#tijori-page { width: 100%; max-width: 1024px; }
 
 #tijori-root {
   --ink: #141b2e;
@@ -34,10 +47,9 @@
   grid-template-columns: 1.1fr 1fr;
   min-height: 640px;
 }
-@media (max-width: 720px) {
-  .tj-login { grid-template-columns: 1fr; }
-  .tj-login-brand { min-height: 220px; }
-}
+/* Mobile breakpoint intentionally removed: the layout below stays
+   identical on phones and desktop, matching the desktop design at
+   all widths (see the forced-width viewport meta tag in <head>). */
 .tj-login-brand {
   background:
     radial-gradient(circle at 80% 20%, rgba(184,137,47,0.18), transparent 55%),
@@ -135,8 +147,8 @@
 .tj-dash-stat { font-size: 13.5px; color: var(--slate); }
 
 .tj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-@media (max-width: 860px) { .tj-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px) { .tj-grid { grid-template-columns: 1fr; } }
+/* Mobile breakpoints intentionally removed — .tj-grid keeps its
+   desktop 3-column layout at every screen width. */
 
 .tj-cat-card {
   background: #fff; border: 1px solid var(--line-paper); border-radius: 8px;
@@ -173,8 +185,8 @@
 .tj-add-btn:hover { background: var(--seal-dark); }
 
 .tj-doc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
-@media (max-width: 860px) { .tj-doc-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 560px) { .tj-doc-grid { grid-template-columns: repeat(2, 1fr); } }
+/* Mobile breakpoints intentionally removed — .tj-doc-grid keeps its
+   desktop column count at every screen width. */
 .tj-doc-card {
   background: #fff; border: 1px solid var(--line-paper); border-radius: 7px; overflow: hidden;
   text-align: left; padding: 0; display: flex; flex-direction: column;
@@ -252,7 +264,9 @@
 }
 .tj-toast.show { opacity: 1; transform: translateX(-50%) translateY(-6px); }
 </style>
-
+</head>
+<body>
+<div id="tijori-page">
 <div id="tijori-root">
   <!-- LOGIN -->
   <div class="tj-login" id="tj-login-screen">
@@ -472,20 +486,59 @@
   function catById(id) { return allCategories().find(c => c.id === id); }
 
   // ---------- storage helpers ----------
+  // On claude.ai this vault used window.storage, an API that only exists
+  // inside Claude's artifact viewer. Hosted anywhere else (GitHub Pages,
+  // your own server, etc.) that API doesn't exist, so nothing ever saved.
+  // This IndexedDB-backed store is a real, standalone database that lives
+  // in the visitor's browser — it works on any host with no backend/server
+  // needed. Documents stay on the device/browser they were added from;
+  // they won't sync to a different phone, computer, or browser.
+  const TJ_DB_NAME = 'tijori-vault';
+  const TJ_STORE = 'kv';
+  let tjDbPromise = null;
+  function tjDb() {
+    if (tjDbPromise) return tjDbPromise;
+    tjDbPromise = new Promise((resolve, reject) => {
+      const req = indexedDB.open(TJ_DB_NAME, 1);
+      req.onupgradeneeded = () => { req.result.createObjectStore(TJ_STORE); };
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+    return tjDbPromise;
+  }
   async function safeGet(key) {
     try {
-      const r = await window.storage.get(key, false);
-      return r ? JSON.parse(r.value) : null;
+      const db = await tjDb();
+      return await new Promise((resolve, reject) => {
+        const tx = db.transaction(TJ_STORE, 'readonly');
+        const req = tx.objectStore(TJ_STORE).get(key);
+        req.onsuccess = () => resolve(req.result !== undefined ? req.result : null);
+        req.onerror = () => reject(req.error);
+      });
     } catch (e) { return null; }
   }
   async function safeSet(key, value) {
     try {
-      const r = await window.storage.set(key, JSON.stringify(value), false);
-      return !!r;
+      const db = await tjDb();
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(TJ_STORE, 'readwrite');
+        tx.objectStore(TJ_STORE).put(value, key);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+      });
+      return true;
     } catch (e) { return false; }
   }
   async function safeDelete(key) {
-    try { await window.storage.delete(key, false); } catch (e) {}
+    try {
+      const db = await tjDb();
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction(TJ_STORE, 'readwrite');
+        tx.objectStore(TJ_STORE).delete(key);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+      });
+    } catch (e) {}
   }
 
   function profileKey(email) { return `tijori:profile:${email}`; }
@@ -1057,3 +1110,6 @@
   setMode('signin');
 })();
 </script>
+</div>
+</body>
+</html>
